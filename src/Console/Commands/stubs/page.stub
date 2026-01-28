@@ -1,0 +1,31 @@
+<?php
+
+namespace {{ namespace }};
+
+use Hewcode\Hewcode\Panel\Controllers\PageController;
+
+class {{ class }} extends PageController
+{
+    protected string $view = '{{ view }}';
+
+    protected string $icon = '{{ icon }}';
+
+    {{ navigationProperty }}
+
+    public function panels(): array
+    {
+        {{ panels }}
+    }
+
+    protected function mount(): void
+    {
+        // Add any initialization logic here
+    }
+
+    protected function getComponents(): array
+    {
+        return array_merge(parent::getComponents(), [
+            // Add any exposed component methods here
+        ]);
+    }
+}

@@ -1,0 +1,35 @@
+<?php
+
+namespace {{ namespace }};
+
+use {{ modelNamespace }};
+use Hewcode\Hewcode\Actions;
+use Hewcode\Hewcode\Lists;
+
+class {{ class }} extends Lists\ListingDefinition
+{
+    protected string $model = {{ model }}::class;
+
+    {{ formProperty }}
+
+    public function default(Lists\Listing $listing): Lists\Listing
+    {
+        return $listing
+            ->visible(auth()->check())
+            ->columns([
+                Lists\Schema\TextColumn::make('id')
+                    ->sortable(),
+                Lists\Schema\TextColumn::make('name')
+                    ->sortable()
+                    ->searchable(),
+                Lists\Schema\TextColumn::make('created_at')
+                    ->datetime()
+                    ->sortable(),
+            ])
+            ->actions([
+                Actions\Eloquent\EditAction::make(),
+                Actions\Eloquent\DeleteAction::make(),
+            ])
+            ->defaultSort('created_at', 'desc');
+    }
+}

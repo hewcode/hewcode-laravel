@@ -1,0 +1,56 @@
+<?php
+
+namespace {{ namespace }};
+
+use {{ modelNamespace }};
+use Hewcode\Hewcode\Actions;
+use Hewcode\Hewcode\Forms;
+use Hewcode\Hewcode\Lists;
+use Hewcode\Hewcode\Panel;
+
+class {{ class }} extends Panel\Resource
+{
+    protected string $model = {{ model }}::class;
+
+{{ panelsMethod }}    public function pages(): array
+    {
+        return [
+            Panel\Controllers\Resources\IndexController::page(),
+            // Remove these page controllers for modal forms instead.
+            Panel\Controllers\Resources\CreateController::page(),
+            Panel\Controllers\Resources\EditController::page(),
+        ];
+    }
+
+    public function form(Forms\Form $form): Forms\Form
+    {
+        return $form
+            ->visible(auth()->check())
+            ->schema([
+                Forms\Schema\TextInput::make('name')
+                    ->required(),
+            ]);
+    }
+
+    public function listing(Lists\Listing $listing): Lists\Listing
+    {
+        return $listing
+            ->visible(auth()->check())
+            ->query({{ model }}::query())
+            ->columns([
+                Lists\Schema\TextColumn::make('id')
+                    ->sortable(),
+                Lists\Schema\TextColumn::make('name')
+                    ->sortable()
+                    ->searchable(),
+                Lists\Schema\TextColumn::make('created_at')
+                    ->datetime()
+                    ->sortable(),
+            ])
+            ->actions([
+                Actions\Eloquent\EditAction::make(),
+                Actions\Eloquent\DeleteAction::make(),
+            ])
+            ->defaultSort('created_at', 'desc');
+    }
+}

@@ -1,0 +1,33 @@
+<?php
+
+namespace {{ namespace }};
+
+use Hewcode\Hewcode\Actions;
+use Hewcode\Hewcode\Panel\Controllers\Resources\CreateController;
+use Hewcode\Hewcode\Props;
+
+class {{ class }} extends CreateController
+{
+    public static string $form = {{ form }}::class;
+
+    protected string $icon = '{{ icon }}';
+
+    public function panels(): array
+    {
+        {{ panels }}
+    }
+
+    protected function props(Props\Props $props): Props\Props
+    {
+        return $props->appendData([
+            // Additional data for this page
+        ]);
+    }
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            Actions\Eloquent\CancelAction::make(),
+        ];
+    }
+}

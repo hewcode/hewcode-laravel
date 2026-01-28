@@ -1,0 +1,22 @@
+<?php
+
+namespace {{ namespace }};
+
+use {{ modelNamespace }};
+use Hewcode\Hewcode\Forms;
+
+class {{ class }} extends Forms\FormDefinition
+{
+    protected string $model = {{ model }}::class;
+
+    public function default(Forms\Form $form): Forms\Form
+    {
+        return $form
+            ->visible(auth()->check())
+            ->schema([
+                Forms\Schema\TextInput::make('name')
+                    ->required(),
+                // Add more form fields here
+            ]);
+    }
+}
