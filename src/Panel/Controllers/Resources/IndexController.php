@@ -35,10 +35,10 @@ class IndexController extends ResourceController
     public function listing(): Lists\Listing
     {
         if (! isset(static::$listing) && ! isset($this->definition)) {
-            throw new RuntimeException('$listing not set on ' . static::class);
+            throw new RuntimeException('$listing not set on '.static::class);
         }
 
-        /** @var Lists\ListingDefinition|Resource $definition */
+        /** @var Lists\ListingDefinition|resource $definition */
         $definition = $this->getDefinition();
 
         if ($definition instanceof Resource) {

@@ -9,21 +9,26 @@ use Hewcode\Hewcode\Contracts;
 use Hewcode\Hewcode\Forms\Set;
 use Hewcode\Hewcode\Support\Component;
 
-abstract class Field extends Component implements Contracts\HasVisibility, Contracts\HasRecord
+abstract class Field extends Component implements Contracts\HasRecord, Contracts\HasVisibility
 {
-    use Concerns\HasLabel;
-    use Concerns\HasPlaceholder;
     use Concerns\HasDefault;
+    use Concerns\HasLabel;
     use Concerns\HasModel;
-    use Concerns\HasVisibility;
-    use Concerns\HasValidationRules;
+    use Concerns\HasPlaceholder;
     use Concerns\HasRecord;
+    use Concerns\HasValidationRules;
+    use Concerns\HasVisibility;
 
     protected bool $dehydrated = true;
+
     protected bool $reactive = false;
+
     protected ?Closure $formatStateUsing = null;
+
     protected ?Closure $dehydrateStateUsing = null;
+
     protected ?Closure $saveUsing = null;
+
     protected ?Closure $onStateUpdate = null;
 
     public function __construct()
@@ -38,7 +43,7 @@ abstract class Field extends Component implements Contracts\HasVisibility, Contr
 
     public static function make(string $name): static
     {
-        return (new static())->name($name);
+        return (new static)->name($name);
     }
 
     public function dehydrated(bool $dehydrated = true): static

@@ -43,11 +43,11 @@ class Component
         $name = $this->getName();
 
         if ($this->collectionName) {
-            $name = $this->collectionName . '.' . $name;
+            $name = $this->collectionName.'.'.$name;
         }
 
         if ($this->parent) {
-            return $this->parent->getPath() . '.' . $name;
+            return $this->parent->getPath().'.'.$name;
         }
 
         return $name;

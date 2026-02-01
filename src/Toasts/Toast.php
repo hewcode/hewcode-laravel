@@ -7,15 +7,20 @@ use Hewcode\Hewcode\Hewcode;
 class Toast
 {
     protected ?string $title = null;
+
     protected ?string $message = null;
+
     protected ?string $type = null;
+
     protected ?int $duration = null;
+
     protected bool $dismissible = true;
+
     protected ToastPosition $position = ToastPosition::TOP_RIGHT;
 
     public static function make(): static
     {
-        return new static();
+        return new static;
     }
 
     public function title(string $title): static

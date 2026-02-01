@@ -7,6 +7,7 @@ use Closure;
 trait HasVisibility
 {
     protected bool|Closure|null $visible = null;
+
     protected bool|Closure|null $hidden = null;
 
     public function visible(bool|Closure $visible = true): static

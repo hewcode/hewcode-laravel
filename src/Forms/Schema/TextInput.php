@@ -5,6 +5,7 @@ namespace Hewcode\Hewcode\Forms\Schema;
 class TextInput extends Field
 {
     protected ?int $maxLength = null;
+
     protected ?string $type = 'text';
 
     public function type(string $type): static

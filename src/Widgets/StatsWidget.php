@@ -81,9 +81,9 @@ class StatsWidget extends Widget
             return '';
         }
 
-        return match($this->format) {
-            'currency' => '$' . number_format((float) $value, 2),
-            'percentage' => number_format((float) $value, 1) . '%',
+        return match ($this->format) {
+            'currency' => '$'.number_format((float) $value, 2),
+            'percentage' => number_format((float) $value, 1).'%',
             'number' => number_format((float) $value),
             default => (string) $value,
         };

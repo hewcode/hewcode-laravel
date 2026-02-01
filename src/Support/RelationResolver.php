@@ -18,6 +18,6 @@ class RelationResolver
             return $relationResolver($record);
         }
 
-        throw new RuntimeException("Relation '$relationName' not found on model " . $record::class);
+        throw new RuntimeException("Relation '$relationName' not found on model ".$record::class);
     }
 }

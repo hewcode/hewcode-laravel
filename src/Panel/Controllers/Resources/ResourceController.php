@@ -11,16 +11,12 @@ use Hewcode\Hewcode\Panel\Page;
 use Hewcode\Hewcode\Panel\Resource;
 use ReflectionClass;
 use RuntimeException;
-use function Pest\Laravel\instance;
 
 /**
  * @template T of Definition
  */
 abstract class ResourceController extends PageController
 {
-    /**
-     * @var Definition|null
-     */
     protected ?Definition $definition = null;
 
     protected ?Page $page = null;
@@ -77,9 +73,6 @@ abstract class ResourceController extends PageController
         return '';
     }
 
-    /**
-     * @return Definition
-     */
     public function getDefinition(): Definition
     {
         if ($this->definition === null) {
@@ -156,13 +149,13 @@ abstract class ResourceController extends PageController
         $reflection = new ReflectionClass(static::class);
 
         if ($reflection->isAbstract()) {
-            throw new RuntimeException('Cannot use abstract controller '. static::class .' as a resource page.');
+            throw new RuntimeException('Cannot use abstract controller '.static::class.' as a resource page.');
         }
 
         return new Page(static::class);
     }
 
-    public function getUrl(array $parameters = [], bool $absolute = true, string $panel = null): string
+    public function getUrl(array $parameters = [], bool $absolute = true, ?string $panel = null): string
     {
         return Hewcode::route(
             $this->getRouteName(),

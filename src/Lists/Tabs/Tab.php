@@ -11,15 +11,20 @@ class Tab
     use EvaluatesClosures;
 
     public string $name;
+
     public string $label;
+
     public Closure|string|null $icon = null;
+
     public Closure|string|null $badge = null;
-    public Closure|null $query = null;
+
+    public ?Closure $query = null;
+
     public bool $active = false;
 
     public static function make(string $name): static
     {
-        return (new static())->name($name);
+        return (new static)->name($name);
     }
 
     public function name(string $name): static

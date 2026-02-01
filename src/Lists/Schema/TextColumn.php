@@ -44,7 +44,7 @@ class TextColumn extends Column
                 return $state;
             }
 
-            return mb_substr($state, 0, $length) . $end;
+            return mb_substr($state, 0, $length).$end;
         });
     }
 
@@ -52,9 +52,8 @@ class TextColumn extends Column
      * Create a closure for formatting date/datetime values.
      * This can be reused by third-party developers in different contexts.
      *
-     * @param string $format The format string to use
-     * @param bool $relative Whether to use relative time format
-     * @return \Closure
+     * @param  string  $format  The format string to use
+     * @param  bool  $relative  Whether to use relative time format
      */
     protected function formatDate(string $format, bool $relative): \Closure
     {

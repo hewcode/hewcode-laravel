@@ -6,6 +6,7 @@ use Hewcode\Hewcode\Hewcode;
 use Illuminate\Support\Facades\Route;
 use Inertia\ProvidesInertiaProperties;
 use Inertia\RenderContext;
+
 use function Hewcode\Hewcode\flattenLocaleArray;
 
 class InertiaProps implements ProvidesInertiaProperties

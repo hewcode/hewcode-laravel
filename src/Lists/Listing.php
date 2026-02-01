@@ -3,65 +3,84 @@
 namespace Hewcode\Hewcode\Lists;
 
 use BadMethodCallException;
+use Closure;
+use Hewcode\Hewcode\Actions\Action;
+use Hewcode\Hewcode\Actions\BulkAction;
 use Hewcode\Hewcode\Concerns;
 use Hewcode\Hewcode\Contracts;
 use Hewcode\Hewcode\Forms\Form;
-use Hewcode\Hewcode\Forms\FormDefinition;
+use Hewcode\Hewcode\Hewcode;
 use Hewcode\Hewcode\Lists\Drivers\EloquentDriver;
 use Hewcode\Hewcode\Lists\Drivers\IterableDriver;
 use Hewcode\Hewcode\Lists\Drivers\ListingDriver;
-use Hewcode\Hewcode\Actions\Action;
-use Hewcode\Hewcode\Actions\BulkAction;
 use Hewcode\Hewcode\Lists\Filters\Filter;
 use Hewcode\Hewcode\Lists\Schema\Column;
 use Hewcode\Hewcode\Lists\Tabs\Tab;
+use Hewcode\Hewcode\Support\Component;
 use Hewcode\Hewcode\Support\ComponentCollection;
 use Hewcode\Hewcode\Support\Container;
-use Hewcode\Hewcode\Support\Component;
 use Hewcode\Hewcode\Support\Context;
-use Hewcode\Hewcode\Hewcode;
+use Hewcode\Hewcode\Support\Expose;
 use Illuminate\Database\Eloquent\Builder;
-use Closure;
 use Illuminate\Database\Eloquent\Model;
 use ReflectionClass;
-use Hewcode\Hewcode\Support\Expose;
 
-class Listing extends Container implements Contracts\MountsActions, Contracts\MountsComponents, Contracts\ResolvesRecords, Contracts\HasVisibility, Contracts\HasOwnerRecord, Contracts\HasRecord
+class Listing extends Container implements Contracts\HasOwnerRecord, Contracts\HasRecord, Contracts\HasVisibility, Contracts\MountsActions, Contracts\MountsComponents, Contracts\ResolvesRecords
 {
-    use Concerns\ResolvesRecords;
-    use Concerns\InteractsWithActions;
-    use Concerns\RequiresVisibility;
-    use Concerns\HasOwnerRecord;
-    use Concerns\HasRecord;
     use Concerns\HasContext;
     use Concerns\HasFormDefinition;
+    use Concerns\HasOwnerRecord;
+    use Concerns\HasRecord;
+    use Concerns\InteractsWithActions;
+    use Concerns\RequiresVisibility;
+    use Concerns\ResolvesRecords;
 
     protected ListingDriver $driver;
-    protected Closure|null $buildDriverUsing = null;
+
+    protected ?Closure $buildDriverUsing = null;
+
     /** @var array<Column> */
     public array $columns = [];
+
     /** @var array<Column>|null */
     private ?array $cachedColumns = null;
+
     public ?array $defaultSort = null;
+
     /** @var array<Filter> */
     public array $filters = [];
+
     /** @var array<Tab> */
     public array $tabs = [];
+
     public ?string $defaultTab = null;
+
     public ?string $activeTab = null;
+
     /** @var array<Action> */
     public array $actions = [];
+
     /** @var array<BulkAction> */
     public array $bulkActions = [];
+
     public int $perPage = 15;
+
     protected ?Closure $bgColorUsing = null;
+
     protected ?string $reorderableColumn = null;
+
     protected bool $deferFiltering = false;
+
     protected bool $inlineFilters = false;
+
     protected ?Closure $touchActionsUsing = null;
+
     protected ?Closure $recordUrlUsing = null;
+
     protected string|Closure|null $recordActionUsing = null;
+
     protected string $layout = 'table';
+
     protected array $cardLayoutConfig = [
         'columns' => 3,
         'aspectRatio' => null,
@@ -69,17 +88,26 @@ class Listing extends Container implements Contracts\MountsActions, Contracts\Mo
 
     // URL persistence settings
     protected bool $persistFiltersInUrl = false;
+
     protected bool $persistSortInUrl = false;
+
     protected bool $persistColumnsInUrl = false;
+
     protected bool $persistSearchInUrl = false;
 
     // Session persistence settings
     protected bool $persistFiltersInSession = false;
+
     protected bool $persistSortInSession = false;
+
     protected bool $persistColumnsInSession = false;
+
     protected bool $persistSearchInSession = false;
+
     protected bool $persistTabInSession = false;
+
     protected ?string $sessionKey = null;
+
     protected ?string $requestScope = null;
 
     public array $filtersState = [];
@@ -96,7 +124,7 @@ class Listing extends Container implements Contracts\MountsActions, Contracts\Mo
 
     public static function make(): self
     {
-        return new static();
+        return new static;
     }
 
     public function buildDriverUsing(Closure $callback): self
@@ -226,7 +254,7 @@ class Listing extends Container implements Contracts\MountsActions, Contracts\Mo
      *
      * The callback can return a Color enum or string value.
      *
-     * @param Closure(mixed $record): (Color|string|null) $callback
+     * @param  Closure(mixed $record): (Color|string|null)  $callback
      */
     public function bgColor(Closure $callback): self
     {
@@ -427,10 +455,10 @@ class Listing extends Container implements Contracts\MountsActions, Contracts\Mo
 
     private function getSessionKey(): string
     {
-        $base = $this->sessionKey ?? 'hewcode_listing_' . static::class;
+        $base = $this->sessionKey ?? 'hewcode_listing_'.static::class;
 
         if ($this->requestScope) {
-            return $base . '_' . $this->requestScope;
+            return $base.'_'.$this->requestScope;
         }
 
         return $base;
@@ -447,7 +475,7 @@ class Listing extends Container implements Contracts\MountsActions, Contracts\Mo
         if (empty($visibleColumnsArray)) {
             foreach ($this->columns as $column) {
                 if ($column->isTogglable()) {
-                    $columnVisibility[$column->getName()] = !$column->isToggledHiddenByDefault();
+                    $columnVisibility[$column->getName()] = ! $column->isToggledHiddenByDefault();
                 }
             }
         } else {
@@ -464,6 +492,7 @@ class Listing extends Container implements Contracts\MountsActions, Contracts\Mo
     private function getFromSession(string $key, mixed $default = null): mixed
     {
         $sessionKey = $this->getSessionKey();
+
         return session()->get("{$sessionKey}.{$key}", $default);
     }
 
@@ -476,7 +505,7 @@ class Listing extends Container implements Contracts\MountsActions, Contracts\Mo
     private function getRequestKey(string $key): string
     {
         if ($this->requestScope && in_array($key, ['filter', 'search', 'sort', 'direction', 'columns', 'activeTab', 'clear'])) {
-            return $this->requestScope . '_' . $key;
+            return $this->requestScope.'_'.$key;
         }
 
         return $key;
@@ -504,9 +533,10 @@ class Listing extends Container implements Contracts\MountsActions, Contracts\Mo
             // Clear specific types or all if clear=true (backward compatibility)
             if ($clearType === true || $clearType === 'filters' && $key === 'filter' ||
                 $clearType === 'columns' && $key === 'columns' ||
-                $clearType ===  'activeTab' && $key === 'activeTab'
+                $clearType === 'activeTab' && $key === 'activeTab'
             ) {
                 $this->putInSession($key, null);
+
                 return $default;
             }
         }
@@ -617,7 +647,7 @@ class Listing extends Container implements Contracts\MountsActions, Contracts\Mo
                 foreach ($visibleColumns as $column) {
                     $columnData = $column->toRecordData($record);
 
-                    $icon = $columnData[$column->getName() . '_icon'] ?? null;
+                    $icon = $columnData[$column->getName().'_icon'] ?? null;
 
                     // Register icon and replace with reference
                     if ($icon && isset($icon['name'])) {
@@ -655,8 +685,8 @@ class Listing extends Container implements Contracts\MountsActions, Contracts\Mo
                             ->isVisible();
                     });
 
-                    if (!empty($visibleActions)) {
-                        $data['_row_actions'] = array_reduce($visibleActions, function ($carry, Action $action) use ($record) {
+                    if (! empty($visibleActions)) {
+                        $data['_row_actions'] = array_reduce($visibleActions, function ($carry, Action $action) {
                             $actionData = $action->toData();
                             $carry[$action->name] = $actionData;
 
@@ -678,7 +708,7 @@ class Listing extends Container implements Contracts\MountsActions, Contracts\Mo
                     'label' => $column->getLabel(),
                     'togglable' => $column->isTogglable(),
                     'isToggledHiddenByDefault' => $column->isToggledHiddenByDefault(),
-                    'hidden' => !$column->isVisible(),
+                    'hidden' => ! $column->isVisible(),
                 ];
             }, $this->columns),
             'sortable' => array_values($sortableFields),
@@ -831,7 +861,7 @@ class Listing extends Container implements Contracts\MountsActions, Contracts\Mo
     #[Expose]
     public function reorder(int $recordId, int $newPosition): bool
     {
-        if (!$this->reorderableColumn || !isset($this->driver)) {
+        if (! $this->reorderableColumn || ! isset($this->driver)) {
             return false;
         }
 

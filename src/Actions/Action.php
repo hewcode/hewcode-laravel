@@ -2,9 +2,9 @@
 
 namespace Hewcode\Hewcode\Actions;
 
+use Closure;
 use Hewcode\Hewcode\Concerns;
 use Hewcode\Hewcode\Contracts;
-use Closure;
 use Hewcode\Hewcode\Hewcode;
 use Hewcode\Hewcode\Support\Component;
 use Hewcode\Hewcode\Support\ComponentCollection;
@@ -15,23 +15,33 @@ use Illuminate\Database\Eloquent\Model;
 
 class Action extends Component implements Contracts\HasRecord, Contracts\HasVisibility, Contracts\MountsComponents
 {
+    use Concerns\HasContext;
+    use Concerns\HasForm;
+    use Concerns\HasLabel;
+    use Concerns\HasModel;
     use Concerns\HasRecord;
     use Concerns\HasVisibility;
-    use Concerns\HasLabel;
-    use Concerns\HasForm;
-    use Concerns\HasModel;
-    use Concerns\HasContext;
 
     public string $color = 'primary';
+
     public ?Closure $action = null;
+
     public bool|Closure $requiresConfirmation = false;
+
     public array|Closure $args = [];
+
     public Closure|string|null $modalHeading = null;
+
     public Closure|string|null $modalDescription = null;
+
     public Closure|string|null $modalWidth = null;
+
     public bool $shouldClose = false;
+
     public Closure|string|null $url = null;
+
     public bool $openInNewTab = false;
+
     public Closure|string|null $icon = null;
 
     public function __construct()
@@ -46,7 +56,7 @@ class Action extends Component implements Contracts\HasRecord, Contracts\HasVisi
 
     public static function make(string $name): static
     {
-        return (new static())->name($name);
+        return (new static)->name($name);
     }
 
     public function color(Color|string $color): static
@@ -185,7 +195,6 @@ class Action extends Component implements Contracts\HasRecord, Contracts\HasVisi
 
         return null;
     }
-
 
     protected function getEvaluationParameters(): array
     {

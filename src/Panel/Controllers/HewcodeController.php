@@ -19,6 +19,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Routing\Route as RoutingRoute;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+
 use function Hewcode\Hewcode\exposed;
 use function Hewcode\Hewcode\generateComponentHash;
 
@@ -88,7 +89,7 @@ class HewcodeController extends Controller
         }
 
         if (! $component instanceof Container) {
-            abort(500, app()->environment('local') ? "Component [$componentName] on controller ".get_class($controller)." must return an instance of ".Container::class : '');
+            abort(500, app()->environment('local') ? "Component [$componentName] on controller ".get_class($controller).' must return an instance of '.Container::class : '');
         }
 
         $component
@@ -197,7 +198,7 @@ class HewcodeController extends Controller
         app(Pipeline::class)
             ->send($request)
             ->through($middleware)
-            ->then(fn ($request) => new \Illuminate\Http\Response());
+            ->then(fn ($request) => new \Illuminate\Http\Response);
     }
 
     protected function getMountableComponent(Container $component, string $mountName): mixed
@@ -214,6 +215,7 @@ class HewcodeController extends Controller
 
                 if ($child !== null) {
                     $current = $child;
+
                     continue;
                 }
             }

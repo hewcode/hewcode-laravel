@@ -2,9 +2,9 @@
 
 namespace Hewcode\Hewcode\Tests;
 
+use Hewcode\Hewcode\HewcodeServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Hewcode\Hewcode\HewcodeServiceProvider;
 
 class TestCase extends Orchestra
 {

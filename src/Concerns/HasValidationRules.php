@@ -8,6 +8,7 @@ use Illuminate\Validation\Rule;
 trait HasValidationRules
 {
     protected bool $required = false;
+
     protected array $rules = [];
 
     public function required(bool $required = true): static
@@ -30,7 +31,7 @@ trait HasValidationRules
         if (empty($validations)) {
             $this->rules[] = 'email';
         } else {
-            $this->rules[] = 'email:' . implode(',', $validations);
+            $this->rules[] = 'email:'.implode(',', $validations);
         }
 
         return $this;
@@ -129,12 +130,13 @@ trait HasValidationRules
         }
 
         $this->rules[] = $rule;
+
         return $this;
     }
 
     public function in(array $values): static
     {
-        $this->rules[] = 'in:' . implode(',', $values);
+        $this->rules[] = 'in:'.implode(',', $values);
 
         return $this;
     }
@@ -278,21 +280,21 @@ trait HasValidationRules
 
     public function doesntStartWith(array $values): static
     {
-        $this->rules[] = 'doesnt_start_with:' . implode(',', $values);
+        $this->rules[] = 'doesnt_start_with:'.implode(',', $values);
 
         return $this;
     }
 
     public function doesntEndWith(array $values): static
     {
-        $this->rules[] = 'doesnt_end_with:' . implode(',', $values);
+        $this->rules[] = 'doesnt_end_with:'.implode(',', $values);
 
         return $this;
     }
 
     public function endsWith(array $values): static
     {
-        $this->rules[] = 'ends_with:' . implode(',', $values);
+        $this->rules[] = 'ends_with:'.implode(',', $values);
 
         return $this;
     }
@@ -313,6 +315,7 @@ trait HasValidationRules
         }
 
         $this->rules[] = $rule;
+
         return $this;
     }
 
@@ -430,7 +433,7 @@ trait HasValidationRules
 
     public function notIn(array $values): static
     {
-        $this->rules[] = 'not_in:' . implode(',', $values);
+        $this->rules[] = 'not_in:'.implode(',', $values);
 
         return $this;
     }
@@ -472,7 +475,7 @@ trait HasValidationRules
 
     public function prohibits(array $fields): static
     {
-        $this->rules[] = 'prohibits:' . implode(',', $fields);
+        $this->rules[] = 'prohibits:'.implode(',', $fields);
 
         return $this;
     }
@@ -493,28 +496,28 @@ trait HasValidationRules
 
     public function requiredWith(array $fields): static
     {
-        $this->rules[] = 'required_with:' . implode(',', $fields);
+        $this->rules[] = 'required_with:'.implode(',', $fields);
 
         return $this;
     }
 
     public function requiredWithAll(array $fields): static
     {
-        $this->rules[] = 'required_with_all:' . implode(',', $fields);
+        $this->rules[] = 'required_with_all:'.implode(',', $fields);
 
         return $this;
     }
 
     public function requiredWithout(array $fields): static
     {
-        $this->rules[] = 'required_without:' . implode(',', $fields);
+        $this->rules[] = 'required_without:'.implode(',', $fields);
 
         return $this;
     }
 
     public function requiredWithoutAll(array $fields): static
     {
-        $this->rules[] = 'required_without_all:' . implode(',', $fields);
+        $this->rules[] = 'required_without_all:'.implode(',', $fields);
 
         return $this;
     }
@@ -535,7 +538,7 @@ trait HasValidationRules
 
     public function startsWith(array $values): static
     {
-        $this->rules[] = 'starts_with:' . implode(',', $values);
+        $this->rules[] = 'starts_with:'.implode(',', $values);
 
         return $this;
     }
@@ -575,30 +578,35 @@ trait HasValidationRules
     public function bail(): static
     {
         $this->rules[] = 'bail';
+
         return $this;
     }
 
     public function excludeIf(string $field, mixed $value): static
     {
         $this->rules[] = "exclude_if:$field,$value";
+
         return $this;
     }
 
     public function excludeUnless(string $field, mixed $value): static
     {
         $this->rules[] = "exclude_unless:$field,$value";
+
         return $this;
     }
 
     public function excludeWith(string $field): static
     {
         $this->rules[] = "exclude_with:$field";
+
         return $this;
     }
 
     public function excludeWithout(string $field): static
     {
         $this->rules[] = "exclude_without:$field";
+
         return $this;
     }
 

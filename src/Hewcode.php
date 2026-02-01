@@ -33,7 +33,7 @@ use Illuminate\Support\Facades\Facade;
  */
 class Hewcode extends Facade
 {
-    public const VERSION = '1.0.0';
+    public const VERSION = '1.0.1';
 
     protected static function getFacadeAccessor(): string
     {

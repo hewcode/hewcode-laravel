@@ -76,7 +76,7 @@ class MakeFormCommand extends GeneratorCommand
         $stub = $this->files->get($this->getStub());
 
         $stub = $this->replaceNamespace($stub, $name)
-                     ->replaceClass($stub, $name);
+            ->replaceClass($stub, $name);
 
         $stub = $this->replaceModel($stub);
 
@@ -96,8 +96,8 @@ class MakeFormCommand extends GeneratorCommand
     protected function replaceModel($stub)
     {
         $model = $this->option('model');
-        
-        if (!$model) {
+
+        if (! $model) {
             // Infer model name from form name (e.g., PostForm -> Post)
             $formName = class_basename($this->getNameInput());
             $model = str_replace('Form', '', $formName);
@@ -121,8 +121,8 @@ class MakeFormCommand extends GeneratorCommand
     protected function generateFormSchema($stub)
     {
         $model = $this->option('model');
-        
-        if (!$model) {
+
+        if (! $model) {
             $formName = class_basename($this->getNameInput());
             $model = str_replace('Form', '', $formName);
         }
@@ -132,8 +132,9 @@ class MakeFormCommand extends GeneratorCommand
 
         try {
             // Check if the model class exists
-            if (!class_exists($modelNamespace)) {
+            if (! class_exists($modelNamespace)) {
                 $this->components->warn("Model {$modelNamespace} not found. Using default schema.");
+
                 return $stub;
             }
 
@@ -141,14 +142,15 @@ class MakeFormCommand extends GeneratorCommand
             $tableName = $modelInstance->getTable();
 
             // Check if table exists
-            if (!\Schema::hasTable($tableName)) {
+            if (! \Schema::hasTable($tableName)) {
                 $this->components->warn("Table '{$tableName}' not found. Using default schema.");
+
                 return $stub;
             }
 
             $columns = \Schema::getColumnListing($tableName);
             $columnTypes = [];
-            
+
             foreach ($columns as $column) {
                 $columnTypes[$column] = \Schema::getColumnType($tableName, $column);
             }
@@ -185,7 +187,7 @@ class MakeFormCommand extends GeneratorCommand
 
             $type = $columnTypes[$column];
             $field = $this->getFormFieldForType($column, $type);
-            
+
             if ($field) {
                 $schema[] = $field;
             }
@@ -204,20 +206,20 @@ class MakeFormCommand extends GeneratorCommand
     protected function getFormFieldForType($column, $type)
     {
         $indent = '                ';
-        
+
         return match (true) {
-            str_contains($column, 'email') => $indent . "Forms\\Schema\\TextInput::make('{$column}')\n{$indent}    ->email(),",
-            str_contains($column, 'password') => $indent . "Forms\\Schema\\TextInput::make('{$column}')\n{$indent}    ->password(),",
-            str_contains($column, 'phone') => $indent . "Forms\\Schema\\TextInput::make('{$column}')\n{$indent}    ->tel(),",
-            str_contains($type, 'text') || str_contains($column, 'description') || str_contains($column, 'content') => $indent . "Forms\\Schema\\Textarea::make('{$column}'),",
-            str_contains($type, 'boolean') || str_contains($column, 'is_') => $indent . "Forms\\Schema\\Toggle::make('{$column}'),",
-            str_contains($type, 'date') && str_contains($column, 'time') => $indent . "Forms\\Schema\\DateTimePicker::make('{$column}'),",
-            str_contains($type, 'date') => $indent . "Forms\\Schema\\DateTimePicker::make('{$column}')\n{$indent}    ->time(false),",
-            str_contains($type, 'time') => $indent . "Forms\\Schema\\DateTimePicker::make('{$column}')\n{$indent}    ->date(false),",
-            str_contains($type, 'json') => $indent . "Forms\\Schema\\KeyValue::make('{$column}'),",
-            str_ends_with($column, '_id') => $indent . "Forms\\Schema\\Select::make('{$column}')\n{$indent}    ->relationship('" . Str::before($column, '_id') . "'),",
-            str_contains($type, 'integer') || str_contains($type, 'decimal') || str_contains($type, 'float') => $indent . "Forms\\Schema\\TextInput::make('{$column}')\n{$indent}    ->numeric(),",
-            default => $indent . "Forms\\Schema\\TextInput::make('{$column}'),"
+            str_contains($column, 'email') => $indent."Forms\\Schema\\TextInput::make('{$column}')\n{$indent}    ->email(),",
+            str_contains($column, 'password') => $indent."Forms\\Schema\\TextInput::make('{$column}')\n{$indent}    ->password(),",
+            str_contains($column, 'phone') => $indent."Forms\\Schema\\TextInput::make('{$column}')\n{$indent}    ->tel(),",
+            str_contains($type, 'text') || str_contains($column, 'description') || str_contains($column, 'content') => $indent."Forms\\Schema\\Textarea::make('{$column}'),",
+            str_contains($type, 'boolean') || str_contains($column, 'is_') => $indent."Forms\\Schema\\Toggle::make('{$column}'),",
+            str_contains($type, 'date') && str_contains($column, 'time') => $indent."Forms\\Schema\\DateTimePicker::make('{$column}'),",
+            str_contains($type, 'date') => $indent."Forms\\Schema\\DateTimePicker::make('{$column}')\n{$indent}    ->time(false),",
+            str_contains($type, 'time') => $indent."Forms\\Schema\\DateTimePicker::make('{$column}')\n{$indent}    ->date(false),",
+            str_contains($type, 'json') => $indent."Forms\\Schema\\KeyValue::make('{$column}'),",
+            str_ends_with($column, '_id') => $indent."Forms\\Schema\\Select::make('{$column}')\n{$indent}    ->relationship('".Str::before($column, '_id')."'),",
+            str_contains($type, 'integer') || str_contains($type, 'decimal') || str_contains($type, 'float') => $indent."Forms\\Schema\\TextInput::make('{$column}')\n{$indent}    ->numeric(),",
+            default => $indent."Forms\\Schema\\TextInput::make('{$column}'),"
         };
     }
 

@@ -4,8 +4,6 @@ namespace Hewcode\Hewcode;
 
 use Hewcode\Hewcode\Http\InertiaProps;
 use Hewcode\Hewcode\Panel\Controllers\HewcodeController;
-use Hewcode\Hewcode\Panel\Navigation\Navigation;
-use Hewcode\Hewcode\Panel\Routing;
 use Hewcode\Hewcode\Support\Config;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Support\Facades\Route;
@@ -31,7 +29,7 @@ class HewcodeServiceProvider extends PackageServiceProvider
     public function packageRegistered()
     {
         $this->app->singleton(Config::class, function () {
-            return new Config();
+            return new Config;
         });
 
         $this->app->singleton(Manager::class, function () {
@@ -39,7 +37,7 @@ class HewcodeServiceProvider extends PackageServiceProvider
         });
 
         $this->app->singleton(Support\IconRegistry::class, function () {
-            return new Support\IconRegistry();
+            return new Support\IconRegistry;
         });
 
         $this->app->alias(Manager::class, 'hewcode');
@@ -66,6 +64,7 @@ class HewcodeServiceProvider extends PackageServiceProvider
 
         if ($this->app->runningInConsole()) {
             $this->commands([
+                Console\Commands\InstallCommand::class,
                 Console\Commands\MakeResourceCommand::class,
                 Console\Commands\MakeListingCommand::class,
                 Console\Commands\MakeFormCommand::class,

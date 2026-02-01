@@ -76,7 +76,7 @@ class MakeResourceCommand extends GeneratorCommand
         $stub = $this->files->get($this->getStub());
 
         $stub = $this->replaceNamespace($stub, $name)
-                     ->replaceClass($stub, $name);
+            ->replaceClass($stub, $name);
 
         $stub = $this->replaceModel($stub);
         $stub = $this->replacePanels($stub);
@@ -97,8 +97,8 @@ class MakeResourceCommand extends GeneratorCommand
     protected function replaceModel($stub)
     {
         $model = $this->option('model');
-        
-        if (!$model) {
+
+        if (! $model) {
             // Infer model name from resource name (e.g., PostsResource -> Post)
             $resourceName = class_basename($this->getNameInput());
             $model = Str::singular(str_replace('Resource', '', $resourceName));
@@ -122,10 +122,10 @@ class MakeResourceCommand extends GeneratorCommand
     protected function replacePanels($stub)
     {
         $panels = $this->option('panels');
-        
+
         if ($panels) {
-            $panelsArray = array_map(fn($panel) => "'{$panel}'", explode(',', $panels));
-            $panelsCode = '[' . implode(', ', $panelsArray) . ']';
+            $panelsArray = array_map(fn ($panel) => "'{$panel}'", explode(',', $panels));
+            $panelsCode = '['.implode(', ', $panelsArray).']';
             $panelsMethod = "    public function panels(): array\n    {\n        return {$panelsCode};\n    }\n\n";
         } else {
             $panelsMethod = '';
@@ -143,8 +143,8 @@ class MakeResourceCommand extends GeneratorCommand
     protected function generateSchemas($stub)
     {
         $model = $this->option('model');
-        
-        if (!$model) {
+
+        if (! $model) {
             $resourceName = class_basename($this->getNameInput());
             $model = Str::singular(str_replace('Resource', '', $resourceName));
         }
@@ -154,8 +154,9 @@ class MakeResourceCommand extends GeneratorCommand
 
         try {
             // Check if the model class exists
-            if (!class_exists($modelNamespace)) {
+            if (! class_exists($modelNamespace)) {
                 $this->components->warn("Model {$modelNamespace} not found. Using default schema.");
+
                 return $stub;
             }
 
@@ -163,14 +164,15 @@ class MakeResourceCommand extends GeneratorCommand
             $tableName = $modelInstance->getTable();
 
             // Check if table exists
-            if (!\Schema::hasTable($tableName)) {
+            if (! \Schema::hasTable($tableName)) {
                 $this->components->warn("Table '{$tableName}' not found. Using default schema.");
+
                 return $stub;
             }
 
             $columns = \Schema::getColumnListing($tableName);
             $columnTypes = [];
-            
+
             foreach ($columns as $column) {
                 $columnTypes[$column] = \Schema::getColumnType($tableName, $column);
             }
@@ -218,7 +220,7 @@ class MakeResourceCommand extends GeneratorCommand
 
             $type = $columnTypes[$column];
             $field = $this->getFormFieldForType($column, $type);
-            
+
             if ($field) {
                 $schema[] = $field;
             }
@@ -239,10 +241,10 @@ class MakeResourceCommand extends GeneratorCommand
         $schema = [];
         $excludeColumns = ['password', 'remember_token'];
         $priorityColumns = ['id', 'name', 'title', 'email'];
-        
+
         // Add priority columns first
         foreach ($priorityColumns as $column) {
-            if (in_array($column, $columns) && !in_array($column, $excludeColumns)) {
+            if (in_array($column, $columns) && ! in_array($column, $excludeColumns)) {
                 $type = $columnTypes[$column];
                 $field = $this->getListingColumnForType($column, $type);
                 if ($field) {
@@ -259,7 +261,7 @@ class MakeResourceCommand extends GeneratorCommand
 
             $type = $columnTypes[$column];
             $field = $this->getListingColumnForType($column, $type);
-            
+
             if ($field) {
                 $schema[] = $field;
             }
@@ -278,20 +280,20 @@ class MakeResourceCommand extends GeneratorCommand
     protected function getFormFieldForType($column, $type)
     {
         $indent = '                ';
-        
+
         return match (true) {
-            str_contains($column, 'email') => $indent . "Forms\\Schema\\TextInput::make('{$column}')\n{$indent}    ->email(),",
-            str_contains($column, 'password') => $indent . "Forms\\Schema\\TextInput::make('{$column}')\n{$indent}    ->password(),",
-            str_contains($column, 'phone') => $indent . "Forms\\Schema\\TextInput::make('{$column}')\n{$indent}    ->tel(),",
-            str_contains($type, 'text') || str_contains($column, 'description') || str_contains($column, 'content') => $indent . "Forms\\Schema\\Textarea::make('{$column}'),",
-            str_contains($type, 'boolean') || str_contains($column, 'is_') => $indent . "Forms\\Schema\\Toggle::make('{$column}'),",
-            str_contains($type, 'date') && str_contains($column, 'time') => $indent . "Forms\\Schema\\DateTimePicker::make('{$column}'),",
-            str_contains($type, 'date') => $indent . "Forms\\Schema\\DateTimePicker::make('{$column}')\n{$indent}    ->time(false),",
-            str_contains($type, 'time') => $indent . "Forms\\Schema\\DateTimePicker::make('{$column}')\n{$indent}    ->date(false),",
-            str_contains($type, 'json') => $indent . "Forms\\Schema\\KeyValue::make('{$column}'),",
-            str_ends_with($column, '_id') => $indent . "Forms\\Schema\\Select::make('{$column}')\n{$indent}    ->relationship('" . Str::before($column, '_id') . "'),",
-            str_contains($type, 'integer') || str_contains($type, 'decimal') || str_contains($type, 'float') => $indent . "Forms\\Schema\\TextInput::make('{$column}')\n{$indent}    ->numeric(),",
-            default => $indent . "Forms\\Schema\\TextInput::make('{$column}'),"
+            str_contains($column, 'email') => $indent."Forms\\Schema\\TextInput::make('{$column}')\n{$indent}    ->email(),",
+            str_contains($column, 'password') => $indent."Forms\\Schema\\TextInput::make('{$column}')\n{$indent}    ->password(),",
+            str_contains($column, 'phone') => $indent."Forms\\Schema\\TextInput::make('{$column}')\n{$indent}    ->tel(),",
+            str_contains($type, 'text') || str_contains($column, 'description') || str_contains($column, 'content') => $indent."Forms\\Schema\\Textarea::make('{$column}'),",
+            str_contains($type, 'boolean') || str_contains($column, 'is_') => $indent."Forms\\Schema\\Toggle::make('{$column}'),",
+            str_contains($type, 'date') && str_contains($column, 'time') => $indent."Forms\\Schema\\DateTimePicker::make('{$column}'),",
+            str_contains($type, 'date') => $indent."Forms\\Schema\\DateTimePicker::make('{$column}')\n{$indent}    ->time(false),",
+            str_contains($type, 'time') => $indent."Forms\\Schema\\DateTimePicker::make('{$column}')\n{$indent}    ->date(false),",
+            str_contains($type, 'json') => $indent."Forms\\Schema\\KeyValue::make('{$column}'),",
+            str_ends_with($column, '_id') => $indent."Forms\\Schema\\Select::make('{$column}')\n{$indent}    ->relationship('".Str::before($column, '_id')."'),",
+            str_contains($type, 'integer') || str_contains($type, 'decimal') || str_contains($type, 'float') => $indent."Forms\\Schema\\TextInput::make('{$column}')\n{$indent}    ->numeric(),",
+            default => $indent."Forms\\Schema\\TextInput::make('{$column}'),"
         };
     }
 
@@ -306,18 +308,18 @@ class MakeResourceCommand extends GeneratorCommand
     {
         $indent = '                ';
         $searchable = in_array($column, ['name', 'title', 'email', 'slug']) ? "\n{$indent}    ->searchable()" : '';
-        $sortable = !str_contains($type, 'text') ? "\n{$indent}    ->sortable()" : '';
-        
+        $sortable = ! str_contains($type, 'text') ? "\n{$indent}    ->sortable()" : '';
+
         return match (true) {
-            str_contains($column, 'email') => $indent . "Lists\\Schema\\TextColumn::make('{$column}'){$sortable}{$searchable},",
-            str_contains($type, 'boolean') || str_contains($column, 'is_') => $indent . "Lists\\Schema\\TextColumn::make('{$column}')\n{$indent}    ->boolean(){$sortable},",
-            str_contains($type, 'date') && str_contains($column, 'time') => $indent . "Lists\\Schema\\TextColumn::make('{$column}')\n{$indent}    ->datetime(){$sortable},",
-            str_contains($type, 'date') => $indent . "Lists\\Schema\\TextColumn::make('{$column}')\n{$indent}    ->date(){$sortable},",
-            str_contains($type, 'time') => $indent . "Lists\\Schema\\TextColumn::make('{$column}')\n{$indent}    ->time(){$sortable},",
-            str_ends_with($column, '_id') => $indent . "Lists\\Schema\\TextColumn::make('" . Str::before($column, '_id') . ".name'){$sortable}{$searchable},",
-            str_contains($type, 'text') => $indent . "Lists\\Schema\\TextColumn::make('{$column}')\n{$indent}    ->limit(50)\n{$indent}    ->wrap(){$searchable},",
-            in_array($column, ['status', 'type', 'category']) => $indent . "Lists\\Schema\\TextColumn::make('{$column}')\n{$indent}    ->badge(){$sortable},",
-            default => $indent . "Lists\\Schema\\TextColumn::make('{$column}'){$sortable}{$searchable},"
+            str_contains($column, 'email') => $indent."Lists\\Schema\\TextColumn::make('{$column}'){$sortable}{$searchable},",
+            str_contains($type, 'boolean') || str_contains($column, 'is_') => $indent."Lists\\Schema\\TextColumn::make('{$column}')\n{$indent}    ->boolean(){$sortable},",
+            str_contains($type, 'date') && str_contains($column, 'time') => $indent."Lists\\Schema\\TextColumn::make('{$column}')\n{$indent}    ->datetime(){$sortable},",
+            str_contains($type, 'date') => $indent."Lists\\Schema\\TextColumn::make('{$column}')\n{$indent}    ->date(){$sortable},",
+            str_contains($type, 'time') => $indent."Lists\\Schema\\TextColumn::make('{$column}')\n{$indent}    ->time(){$sortable},",
+            str_ends_with($column, '_id') => $indent."Lists\\Schema\\TextColumn::make('".Str::before($column, '_id').".name'){$sortable}{$searchable},",
+            str_contains($type, 'text') => $indent."Lists\\Schema\\TextColumn::make('{$column}')\n{$indent}    ->limit(50)\n{$indent}    ->wrap(){$searchable},",
+            in_array($column, ['status', 'type', 'category']) => $indent."Lists\\Schema\\TextColumn::make('{$column}')\n{$indent}    ->badge(){$sortable},",
+            default => $indent."Lists\\Schema\\TextColumn::make('{$column}'){$sortable}{$searchable},"
         };
     }
 

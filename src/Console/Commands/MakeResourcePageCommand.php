@@ -3,7 +3,6 @@
 namespace Hewcode\Hewcode\Console\Commands;
 
 use Illuminate\Console\GeneratorCommand;
-use Illuminate\Support\Str;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -51,7 +50,7 @@ class MakeResourcePageCommand extends GeneratorCommand
         $stub = $this->files->get($this->getStub());
 
         $stub = $this->replaceNamespace($stub, $name)
-                     ->replaceClass($stub, $name);
+            ->replaceClass($stub, $name);
 
         $stub = $this->replaceDefinitionClass($stub);
         $stub = $this->replaceIcon($stub);
@@ -64,7 +63,7 @@ class MakeResourcePageCommand extends GeneratorCommand
     {
         $definitionClass = $this->option('definition');
 
-        if (!$definitionClass) {
+        if (! $definitionClass) {
             // Try to infer from controller name
             // e.g., ListUsersController -> UserListing
             // e.g., EditUserController -> UserForm
@@ -106,8 +105,8 @@ class MakeResourcePageCommand extends GeneratorCommand
     }', $panelsCode, $stub);
         } else {
             if ($panels) {
-                $panelsArray = array_map(fn($panel) => "'{$panel}'", explode(',', $panels));
-                $panelsCode = 'return [' . implode(', ', $panelsArray) . '];';
+                $panelsArray = array_map(fn ($panel) => "'{$panel}'", explode(',', $panels));
+                $panelsCode = 'return ['.implode(', ', $panelsArray).'];';
             } else {
                 $panelsCode = "return ['app'];";
             }

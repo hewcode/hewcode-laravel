@@ -52,7 +52,7 @@ class ServeResourceController
         $controller = $this->getPageController($routeName);
 
         if (! method_exists($controller, $componentName)) {
-            abort(404, app()->environment('local') ? "Component [$componentName] not found on controller " . get_class($controller) : '');
+            abort(404, app()->environment('local') ? "Component [$componentName] not found on controller ".get_class($controller) : '');
         }
 
         return $controller->{$componentName}();

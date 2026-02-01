@@ -3,14 +3,14 @@
 namespace Hewcode\Hewcode\Widgets;
 
 use Closure;
-use Hewcode\Hewcode\Concerns\HasVisibility;
 use Hewcode\Hewcode\Concerns\HasLabel;
+use Hewcode\Hewcode\Concerns\HasVisibility;
 use Hewcode\Hewcode\Support\Component;
 
 abstract class Widget extends Component
 {
-    use HasVisibility;
     use HasLabel;
+    use HasVisibility;
 
     protected ?string $description = null;
 
@@ -36,7 +36,7 @@ abstract class Widget extends Component
 
     public static function make(string $name): static
     {
-        return (new static())->name($name);
+        return (new static)->name($name);
     }
 
     public function description(?string $description): static

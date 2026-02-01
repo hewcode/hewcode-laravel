@@ -2,27 +2,30 @@
 
 namespace Hewcode\Hewcode\Props;
 
+use Hewcode\Hewcode\Actions\Expose as ActionsExpose;
 use Hewcode\Hewcode\Contracts\HasOwnerRecord;
 use Hewcode\Hewcode\Contracts\HasRecord;
 use Hewcode\Hewcode\Contracts\ResolvesRecords;
-use Hewcode\Hewcode\Support\Container;
-use Illuminate\Database\Eloquent\Model;
-use ReflectionClass;
-use ReflectionException;
-use Hewcode\Hewcode\Lists\Listing;
-use Hewcode\Hewcode\Lists\Expose as ListingExpose;
-use Hewcode\Hewcode\Actions\Expose as ActionsExpose;
 use Hewcode\Hewcode\Forms\Expose as FormsExpose;
+use Hewcode\Hewcode\Lists\Expose as ListingExpose;
+use Hewcode\Hewcode\Lists\Listing;
+use Hewcode\Hewcode\Support\Container;
 use Hewcode\Hewcode\Widgets\Expose as WidgetsExpose;
 use Illuminate\Contracts\Support\Arrayable;
-use RuntimeException;
+use Illuminate\Database\Eloquent\Model;
 use InvalidArgumentException;
+use ReflectionClass;
+use ReflectionException;
+use RuntimeException;
 
 class Props implements Arrayable
 {
     protected array $data = [];
+
     protected ?object $controller = null;
+
     protected array $componentNames = [];
+
     protected ?Model $record = null;
 
     public static function make(?object $controller, array $data = []): static
@@ -159,7 +162,7 @@ class Props implements Arrayable
             }
 
             // Track if this is a listing component
-            if (!empty($listingAttributes)) {
+            if (! empty($listingAttributes)) {
                 $listingComponents[] = $componentName;
             }
         }

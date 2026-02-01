@@ -7,13 +7,13 @@ use Hewcode\Hewcode\Panel\Controllers\Resources\ResourceController;
 class Page
 {
     protected array $headerActions = [];
+
     protected ?string $title = null;
 
     public function __construct(
         /** @var class-string<ResourceController> */
         protected string $controller
-    ) {
-    }
+    ) {}
 
     public function headerActions(array $actions): static
     {

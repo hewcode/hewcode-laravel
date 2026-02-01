@@ -9,14 +9,14 @@ use Hewcode\Hewcode\Support\ComponentCollection;
 use Hewcode\Hewcode\Support\Container;
 use Hewcode\Hewcode\Support\Context;
 
-class Actions extends Container implements Contracts\MountsActions, Contracts\MountsComponents, Contracts\ResolvesRecords, Contracts\HasVisibility, Contracts\HasRecord
+class Actions extends Container implements Contracts\HasRecord, Contracts\HasVisibility, Contracts\MountsActions, Contracts\MountsComponents, Contracts\ResolvesRecords
 {
-    use Concerns\ResolvesRecords;
+    use Concerns\HasContext;
+    use Concerns\HasFormDefinition;
+    use Concerns\HasRecord;
     use Concerns\InteractsWithActions;
     use Concerns\RequiresVisibility;
-    use Concerns\HasRecord;
-    use Concerns\HasFormDefinition;
-    use Concerns\HasContext;
+    use Concerns\ResolvesRecords;
 
     public function __construct(
         /** @var Action[] $actions */

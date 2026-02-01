@@ -19,7 +19,7 @@ function flattenLocaleArray(array $array, string $prefix = ''): array
             $key = str($key)->afterLast('\\')->snake()->toString();
         }
 
-        $newKey = $prefix === '' ? $key : $prefix . '.' . $key;
+        $newKey = $prefix === '' ? $key : $prefix.'.'.$key;
 
         if (is_array($value)) {
             $result += flattenLocaleArray($value, $newKey);
@@ -40,7 +40,7 @@ function generateComponentHash(string $component, ?string $route = null, ?int $t
 
     $hash = hash_hmac(
         'sha256',
-        $component . '|' . $route . '|' . $userId . '|' . $timestamp . '|' . $nonce,
+        $component.'|'.$route.'|'.$userId.'|'.$timestamp.'|'.$nonce,
         config('app.key')
     );
 
@@ -61,6 +61,7 @@ function generateFieldLabel(string $name): string
     // Handle dot notation for labels - convert "category.name" to "Category Name"
     if (str_contains($name, '.')) {
         $parts = explode('.', $name);
+
         return str(implode(' ', $parts))->title()->toString();
     }
 
@@ -117,7 +118,7 @@ function seekComponent(string $name, Component $component): ?Component
     $lastComponent = null;
 
     foreach (explode('.', $name) as $part) {
-        $currentPart = ($lastPart ? $lastPart . '.' : '') . $part;
+        $currentPart = ($lastPart ? $lastPart.'.' : '').$part;
 
         if (! $lastComponent) {
             $lastComponent = $actions->first(fn (Action $action) => $action->name === $part);
@@ -128,6 +129,7 @@ function seekComponent(string $name, Component $component): ?Component
                 if ($component) {
                     $lastComponent = $component;
                     $lastPart = $currentPart;
+
                     continue;
                 }
             }

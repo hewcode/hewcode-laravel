@@ -2,7 +2,6 @@
 
 namespace Hewcode\Hewcode\Contracts;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 interface ResolvesRecords

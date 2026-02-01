@@ -2,23 +2,24 @@
 
 namespace Hewcode\Hewcode\Forms\Schema\Wizard;
 
-use Closure;
 use Hewcode\Hewcode\Concerns;
 use Hewcode\Hewcode\Contracts;
 use Hewcode\Hewcode\Forms\Schema\Field;
 use Hewcode\Hewcode\Support\Component;
 use Illuminate\Database\Eloquent\Model;
 
-class Step extends Component implements Contracts\HasVisibility, Contracts\HasRecord
+class Step extends Component implements Contracts\HasRecord, Contracts\HasVisibility
 {
     use Concerns\HasLabel;
-    use Concerns\HasVisibility;
-    use Concerns\HasRecord;
     use Concerns\HasModel;
+    use Concerns\HasRecord;
+    use Concerns\HasVisibility;
 
     /** @var array<Field> */
     protected array $fields = [];
+
     protected ?string $description = null;
+
     protected ?string $icon = null;
 
     public function __construct()
@@ -33,7 +34,7 @@ class Step extends Component implements Contracts\HasVisibility, Contracts\HasRe
 
     public static function make(string $name): static
     {
-        return (new static())->name($name);
+        return (new static)->name($name);
     }
 
     public function schema(array $fields): static

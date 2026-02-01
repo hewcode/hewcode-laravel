@@ -2,8 +2,8 @@
 
 namespace Hewcode\Hewcode\Actions\Eloquent;
 
-use Hewcode\Hewcode\Actions\BulkAction;
 use Closure;
+use Hewcode\Hewcode\Actions\BulkAction;
 use Hewcode\Hewcode\Toasts\Toast;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -25,7 +25,7 @@ class BulkDeleteAction extends BulkAction
 
     public static function make(string $name = 'delete'): static
     {
-        return (new static())->name($name);
+        return (new static)->name($name);
     }
 
     public function forceDelete(): static

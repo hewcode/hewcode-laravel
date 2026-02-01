@@ -6,13 +6,11 @@ use Hewcode\Hewcode\Panel\Navigation\NavigationItem;
 
 trait HasItems
 {
-    /** @var NavigationItem[] $items */
+    /** @var NavigationItem[] */
     protected array $items = [];
 
     /**
      * Add an item.
-     *
-     * @param NavigationItem $item
      */
     public function item(NavigationItem $item): static
     {
@@ -24,7 +22,7 @@ trait HasItems
     /**
      * Add multiple items.
      *
-     * @param array<NavigationItem> $items
+     * @param  array<NavigationItem>  $items
      */
     public function items(array $items): static
     {

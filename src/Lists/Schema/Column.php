@@ -12,28 +12,47 @@ use Illuminate\Database\Eloquent\Model;
 
 abstract class Column extends Component implements Contracts\HasVisibility
 {
-    use Concerns\HasVisibility;
     use Concerns\HasLabel;
+    use Concerns\HasVisibility;
 
     protected bool $sortable = false;
+
     protected bool $searchable = false;
+
     protected ?Closure $getStateUsing = null;
+
     protected ?Closure $formatStateUsing = null;
+
     protected ?string $sortField = null;
+
     protected ?string $searchField = null;
+
     protected bool $wrap = false;
+
     protected bool $badge = false;
+
     protected ?string $badgeVariant = null;
+
     protected ?Closure $colorUsing = null;
+
     protected ?Closure $beforeUsing = null;
+
     protected ?Closure $afterUsing = null;
+
     protected ?Closure $omitUsing = null;
+
     protected ?Model $model = null;
+
     protected bool $togglable = false;
+
     protected bool $isToggledHiddenByDefault = false;
+
     protected string|Closure|null $iconUsing = null;
+
     protected string $iconPosition = 'before';
+
     protected int $iconSize = 16;
+
     protected string $cardRole = 'content';
 
     public function __construct()
@@ -48,7 +67,7 @@ abstract class Column extends Component implements Contracts\HasVisibility
 
     public static function make(string $name): static
     {
-        return (new static())->name($name);
+        return (new static)->name($name);
     }
 
     public function sortable(bool $sortable = true, ?string $field = null): static
@@ -101,7 +120,7 @@ abstract class Column extends Component implements Contracts\HasVisibility
      *
      * Accepts a direct Color enum/string value, or a callback that returns one.
      *
-     * @param Color|string|Closure(mixed $record): (Color|string|null) $color
+     * @param  Color|string|Closure(mixed $record): (Color|string|null)  $color
      */
     public function color(Color|string|Closure $color): static
     {
@@ -146,7 +165,7 @@ abstract class Column extends Component implements Contracts\HasVisibility
 
     public function getIcon($record): ?array
     {
-        if (!$this->iconUsing) {
+        if (! $this->iconUsing) {
             return null;
         }
 
@@ -154,7 +173,7 @@ abstract class Column extends Component implements Contracts\HasVisibility
             ? $this->evaluate($this->iconUsing, ['record' => $record])
             : $this->iconUsing;
 
-        if (!$iconName) {
+        if (! $iconName) {
             return null;
         }
 
@@ -353,19 +372,19 @@ abstract class Column extends Component implements Contracts\HasVisibility
         $data[$this->getName()] = $this->toFragment($record);
 
         if ($before = $this->getBeforeContent($record)) {
-            $data[$this->getName() . '_before'] = $before;
+            $data[$this->getName().'_before'] = $before;
         }
 
         if ($after = $this->getAfterContent($record)) {
-            $data[$this->getName() . '_after'] = $after;
+            $data[$this->getName().'_after'] = $after;
         }
 
         if ($color = $this->getColor($record)) {
-            $data[$this->getName() . '_color'] = $color;
+            $data[$this->getName().'_color'] = $color;
         }
 
         if ($icon = $this->getIcon($record)) {
-            $data[$this->getName() . '_icon'] = $icon;
+            $data[$this->getName().'_icon'] = $icon;
         }
 
         return $data;
@@ -376,12 +395,12 @@ abstract class Column extends Component implements Contracts\HasVisibility
         $value = $this->getValue($record);
 
         if ($this->shouldShowBadge() && ! ($value instanceof Fragments\Fragment)) {
-            return (new Fragments\Badge(
+            return new Fragments\Badge(
                 $value,
                 $this->getColor($record),
                 $this->getIcon($record),
                 $this->badgeVariant,
-            ));
+            );
         }
 
         return Fragments\Text::make($value);

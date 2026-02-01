@@ -32,7 +32,7 @@ abstract class Resource extends Definition
             : null;
 
         if (! $definition) {
-            $definition = (new Lists\ListingDefinition())
+            $definition = (new Lists\ListingDefinition)
                 ->formDefinition($this->createFormDefinition())
                 ->model($this->getModelClass());
         }
@@ -56,7 +56,7 @@ abstract class Resource extends Definition
 
     public function createFormDefinition(): Forms\FormDefinition
     {
-        return (new Forms\FormDefinition())
+        return (new Forms\FormDefinition)
             ->model($this->getModelClass())
             ->touch(fn (Forms\Form $form) => $this->form($form));
     }

@@ -5,8 +5,11 @@ namespace Hewcode\Hewcode\Forms\Schema;
 class DateTimePicker extends Field
 {
     protected bool $time = true;
+
     protected bool $date = true;
+
     protected ?string $format = null;
+
     protected bool $native = true;
 
     protected function setUp(): void
@@ -40,18 +43,21 @@ class DateTimePicker extends Field
     public function date(bool $date = true): static
     {
         $this->date = $date;
+
         return $this;
     }
 
     public function format(string $format): static
     {
         $this->format = $format;
+
         return $this;
     }
 
     public function native(bool $native = true): static
     {
         $this->native = $native;
+
         return $this;
     }
 

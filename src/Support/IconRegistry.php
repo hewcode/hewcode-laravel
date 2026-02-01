@@ -17,7 +17,7 @@ class IconRegistry
     /**
      * Register an icon for efficient serialization.
      *
-     * @param string|null $iconName The icon name (e.g., 'lucide-circle-dot')
+     * @param  string|null  $iconName  The icon name (e.g., 'lucide-circle-dot')
      * @return array{name: string}|null Icon reference for frontend
      */
     public function register(?string $iconName): ?array

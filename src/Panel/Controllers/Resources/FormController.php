@@ -60,7 +60,7 @@ abstract class FormController extends ResourceController
     public function form(): Forms\Form
     {
         if (! isset(static::$form) && ! isset($this->definition)) {
-            throw new RuntimeException('$form not set on ' . static::class);
+            throw new RuntimeException('$form not set on '.static::class);
         }
 
         /** @var Forms\FormDefinition $definition */

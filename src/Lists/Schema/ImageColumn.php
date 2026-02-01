@@ -7,8 +7,11 @@ use Illuminate\Support\Facades\Storage;
 class ImageColumn extends Column
 {
     protected ?int $width = null;
+
     protected ?int $height = null;
+
     protected bool $circular = false;
+
     protected ?string $disk = null;
 
     protected function setUp(): void
@@ -17,7 +20,7 @@ class ImageColumn extends Column
 
         // Format state to convert storage paths to URLs
         $this->formatStateUsing(function ($state) {
-            if (!$state) {
+            if (! $state) {
                 return null;
             }
 

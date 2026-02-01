@@ -11,8 +11,10 @@ use RuntimeException;
 trait HasOwnerRecord
 {
     protected mixed $ownerRecord = null;
-    protected string|null $relationshipName = null;
-    protected Closure|null $modifyRelationshipQueryUsing = null;
+
+    protected ?string $relationshipName = null;
+
+    protected ?Closure $modifyRelationshipQueryUsing = null;
 
     public function ownerRecord(mixed $ownerRecord): static
     {
@@ -21,7 +23,7 @@ trait HasOwnerRecord
         return $this;
     }
 
-    public function relationship(string $name, Closure|null $modifyRelationshipQueryUsing = null): static
+    public function relationship(string $name, ?Closure $modifyRelationshipQueryUsing = null): static
     {
         $this->relationshipName = $name;
         $this->modifyRelationshipQueryUsing = $modifyRelationshipQueryUsing;
@@ -44,7 +46,7 @@ trait HasOwnerRecord
         return $this->ownerRecord;
     }
 
-    public function getRelationshipName(): string|null
+    public function getRelationshipName(): ?string
     {
         return $this->relationshipName;
     }

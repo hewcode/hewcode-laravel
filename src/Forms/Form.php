@@ -7,11 +7,10 @@ use Hewcode\Hewcode\Actions\Action;
 use Hewcode\Hewcode\Concerns;
 use Hewcode\Hewcode\Contracts;
 use Hewcode\Hewcode\Forms\Schema\Field;
-use Hewcode\Hewcode\Forms\Schema;
 use Hewcode\Hewcode\Forms\Schema\Wizard\Step;
+use Hewcode\Hewcode\Support\Component;
 use Hewcode\Hewcode\Support\ComponentCollection;
 use Hewcode\Hewcode\Support\Container;
-use Hewcode\Hewcode\Support\Component;
 use Hewcode\Hewcode\Support\Context;
 use Hewcode\Hewcode\Support\Expose;
 use Hewcode\Hewcode\Toasts\Toast;
@@ -20,27 +19,34 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use RuntimeException;
 
-class Form extends Container implements Contracts\ResolvesRecords, Contracts\HasRecord, Contracts\HasVisibility, Contracts\MountsActions, Contracts\MountsComponents
+class Form extends Container implements Contracts\HasRecord, Contracts\HasVisibility, Contracts\MountsActions, Contracts\MountsComponents, Contracts\ResolvesRecords
 {
-    use Concerns\ResolvesRecords;
+    use Concerns\HasContext;
     use Concerns\HasRecord;
     use Concerns\InteractsWithActions;
     use Concerns\RequiresVisibility;
-    use Concerns\HasContext;
+    use Concerns\ResolvesRecords;
 
     /** @var array<Field> */
     protected array $fields = [];
+
     protected array $state = [];
+
     protected ?Closure $submitUsing = null;
+
     protected ?Closure $submitAction = null;
+
     protected ?Closure $fillUsing = null;
+
     /** @var array<Action> */
     protected array $footerActions = [];
 
     // Wizard properties
     /** @var array<Step> */
     protected array $wizardSteps = [];
+
     protected bool $wizardSkippable = true;
+
     protected bool $wizardShowFooterActionsInLastStep = true;
 
     public function __construct()
@@ -56,7 +62,7 @@ class Form extends Container implements Contracts\ResolvesRecords, Contracts\Has
 
     public static function make(?string $name = 'form'): static
     {
-        return (new static())->name($name);
+        return (new static)->name($name);
     }
 
     public function schema(array $fields): static
@@ -67,7 +73,7 @@ class Form extends Container implements Contracts\ResolvesRecords, Contracts\Has
     }
 
     /**
-     * @param array<Step> $steps
+     * @param  array<Step>  $steps
      */
     public function wizard(array $steps): static
     {
@@ -174,6 +180,7 @@ class Form extends Container implements Contracts\ResolvesRecords, Contracts\Has
 
     /**
      * Get all fields - from wizard steps if wizard mode, otherwise regular fields
+     *
      * @return array<Field>
      */
     public function getFlattenedFields(): array
@@ -183,6 +190,7 @@ class Form extends Container implements Contracts\ResolvesRecords, Contracts\Has
             foreach ($this->getSteps() as $step) {
                 $fields = array_merge($fields, $step->getFields());
             }
+
             return $fields;
         }
 
@@ -191,6 +199,7 @@ class Form extends Container implements Contracts\ResolvesRecords, Contracts\Has
 
     /**
      * Get all prepared fields - from wizard steps if wizard mode, otherwise regular fields
+     *
      * @return array<Field>
      */
     protected function getFlattenedPreparedFields(): array
@@ -200,6 +209,7 @@ class Form extends Container implements Contracts\ResolvesRecords, Contracts\Has
             foreach ($this->getPreparedSteps() as $step) {
                 $fields = array_merge($fields, $step->getPreparedFields());
             }
+
             return $fields;
         }
 
@@ -344,7 +354,7 @@ class Form extends Container implements Contracts\ResolvesRecords, Contracts\Has
         });
     }
 
-    function getMountableActions(): array
+    public function getMountableActions(): array
     {
         return array_merge(
             $this->getFooterActions(),
@@ -381,7 +391,7 @@ class Form extends Container implements Contracts\ResolvesRecords, Contracts\Has
                 ->componentCollection('actions')
                 ->withPublicContext('state', $this->state),
             array_merge($this->footerActions, [
-                $this->getSubmitAction()
+                $this->getSubmitAction(),
             ])
         );
     }

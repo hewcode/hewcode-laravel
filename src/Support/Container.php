@@ -3,6 +3,7 @@
 namespace Hewcode\Hewcode\Support;
 
 use Illuminate\Support\Facades\Route;
+
 use function Hewcode\Hewcode\generateComponentHash;
 
 class Container extends Component

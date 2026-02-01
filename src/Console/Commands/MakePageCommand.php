@@ -80,7 +80,7 @@ class MakePageCommand extends GeneratorCommand
         $stub = $this->files->get($this->getStub());
 
         $stub = $this->replaceNamespace($stub, $name)
-                     ->replaceClass($stub, $name);
+            ->replaceClass($stub, $name);
 
         $stub = $this->replaceView($stub);
         $stub = $this->replaceIcon($stub);
@@ -103,8 +103,8 @@ class MakePageCommand extends GeneratorCommand
     protected function replaceView($stub)
     {
         $view = $this->option('view');
-        
-        if (!$view) {
+
+        if (! $view) {
             // Infer view name from controller name (e.g., DashboardController -> dashboard)
             $controllerName = class_basename($this->getNameInput());
             $view = Str::kebab(str_replace('Controller', '', $controllerName));
@@ -135,7 +135,7 @@ class MakePageCommand extends GeneratorCommand
     protected function replacePanels($stub)
     {
         $panels = $this->option('panels');
-        
+
         if ($panels === 'all') {
             $panelsCode = 'public function panels(): array|true
     {
@@ -147,8 +147,8 @@ class MakePageCommand extends GeneratorCommand
     }', $panelsCode, $stub);
         } else {
             if ($panels) {
-                $panelsArray = array_map(fn($panel) => "'{$panel}'", explode(',', $panels));
-                $panelsCode = 'return [' . implode(', ', $panelsArray) . '];';
+                $panelsArray = array_map(fn ($panel) => "'{$panel}'", explode(',', $panels));
+                $panelsCode = 'return ['.implode(', ', $panelsArray).'];';
             } else {
                 $panelsCode = "return ['app'];";
             }
@@ -182,7 +182,7 @@ class MakePageCommand extends GeneratorCommand
     {
         $formClass = $this->option('form');
 
-        if (!$formClass || $formClass === true) {
+        if (! $formClass || $formClass === true) {
             // Try to infer from controller name
             // e.g., CustomFormController -> CustomForm
             $controllerName = class_basename($this->getNameInput());

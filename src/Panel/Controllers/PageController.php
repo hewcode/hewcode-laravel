@@ -5,7 +5,6 @@ namespace Hewcode\Hewcode\Panel\Controllers;
 use Hewcode\Hewcode\Actions;
 use Hewcode\Hewcode\Hewcode;
 use Hewcode\Hewcode\Panel\Navigation;
-use Hewcode\Hewcode\Panel\Resource;
 use Hewcode\Hewcode\Props;
 use Inertia\Inertia;
 use Inertia\Response;

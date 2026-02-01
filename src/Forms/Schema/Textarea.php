@@ -5,6 +5,7 @@ namespace Hewcode\Hewcode\Forms\Schema;
 class Textarea extends Field
 {
     protected ?int $rows = 4;
+
     protected ?int $maxLength = null;
 
     public function rows(int $count): static

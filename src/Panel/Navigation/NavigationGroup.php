@@ -12,7 +12,7 @@ class NavigationGroup extends NavigationItem
 
     public static function make(): static
     {
-        return new static();
+        return new static;
     }
 
     public function collapsed(bool $collapsed = true): static

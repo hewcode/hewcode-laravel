@@ -9,12 +9,13 @@ class Context
     protected ?string $context = null;
 
     protected Collection $internalBag;
+
     protected Collection $publicBag;
 
     public function __construct()
     {
-        $this->internalBag = new Collection();
-        $this->publicBag = new Collection();
+        $this->internalBag = new Collection;
+        $this->publicBag = new Collection;
     }
 
     public function context(?string $context = null): ?static

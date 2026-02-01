@@ -16,19 +16,31 @@ use InvalidArgumentException;
 class Panel
 {
     protected string $name;
+
     protected ?string $title = null;
+
     protected string $layout = 'sidebar';
+
     protected string|Closure|null $logo = null;
+
     protected string|Closure|null $logoIcon = null;
+
     protected Navigation $navigation;
+
     protected ?Closure $navigationUsing = null;
 
     protected bool $loginEnabled = true;
+
     protected bool $registerEnabled = true;
+
     protected bool $passwordResetEnabled = true;
+
     protected bool $emailVerificationEnabled = true;
+
     protected bool $profileSettingsEnabled = true;
+
     protected bool $passwordSettingsEnabled = true;
+
     protected bool $appearanceSettingsEnabled = true;
 
     protected array $middleware = [];
@@ -203,7 +215,7 @@ class Panel
         $this->registerNavigation();
     }
 
-    public function navigation(Closure $navigationUsing = null): self
+    public function navigation(?Closure $navigationUsing = null): self
     {
         $this->navigationUsing = $navigationUsing;
 

@@ -8,8 +8,7 @@ class ComponentCollection implements MountsComponents
 {
     public function __construct(
         protected array $components
-    ) {
-    }
+    ) {}
 
     public function getComponent(string $name): Component|ComponentCollection|null
     {

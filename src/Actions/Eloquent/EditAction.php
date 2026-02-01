@@ -2,14 +2,11 @@
 
 namespace Hewcode\Hewcode\Actions\Eloquent;
 
-use Hewcode\Hewcode\Actions\Action;
 use Closure;
-use Hewcode\Hewcode\Forms\FormDefinition;
-use Hewcode\Hewcode\Lists\Listing;
+use Hewcode\Hewcode\Actions\Action;
 use Hewcode\Hewcode\Toasts\Toast;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use RuntimeException;
 
 class EditAction extends Action
 {
@@ -25,7 +22,7 @@ class EditAction extends Action
 
     public static function make(string $name = 'edit'): static
     {
-        return (new static())->name($name);
+        return (new static)->name($name);
     }
 
     protected function getDefaultAction(): Closure

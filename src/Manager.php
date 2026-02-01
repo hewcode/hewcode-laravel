@@ -26,7 +26,7 @@ class Manager
         //
     ) {}
 
-    public function shareWithResponse(string $key, string|null $identifier, array $data): void
+    public function shareWithResponse(string $key, ?string $identifier, array $data): void
     {
         $current = session()->get("hewcode.$key", []);
 
@@ -232,7 +232,7 @@ class Manager
                 }
 
                 if ($namespace) {
-                    return $namespace . '\\' . $filename;
+                    return $namespace.'\\'.$filename;
                 }
 
                 return $filename;
@@ -307,7 +307,7 @@ class Manager
         $hewcodeBasePath = env('HEWCODE_REACT_PATH', 'node_modules/@hewcode/react');
 
         foreach ($paths as $path) {
-            $expandedPath = str_replace('hewcode::', $hewcodeBasePath . '/src/', $path);
+            $expandedPath = str_replace('hewcode::', $hewcodeBasePath.'/src/', $path);
             $absolutePath = base_path($expandedPath);
 
             if (file_exists($absolutePath)) {

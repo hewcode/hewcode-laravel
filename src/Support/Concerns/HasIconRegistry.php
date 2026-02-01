@@ -17,17 +17,17 @@ trait HasIconRegistry
     /**
      * Register an icon for efficient serialization.
      *
-     * @param string|null $iconName The icon name (e.g., 'lucide-circle-dot')
+     * @param  string|null  $iconName  The icon name (e.g., 'lucide-circle-dot')
      * @return array{name: string, svg?: string}|null Icon reference for frontend
      */
     protected function registerIcon(?string $iconName): ?array
     {
-        if (!$iconName) {
+        if (! $iconName) {
             return null;
         }
 
         // Register the SVG only once (deduplication)
-        if (!isset($this->iconRegistry[$iconName])) {
+        if (! isset($this->iconRegistry[$iconName])) {
             $this->iconRegistry[$iconName] = svg($iconName)->toHtml();
         }
 

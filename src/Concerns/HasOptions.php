@@ -13,12 +13,19 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 trait HasOptions
 {
     public array|Closure|null $options = [];
+
     public bool $multiple = false;
+
     public bool $searchable = false;
+
     public ?Closure $searchResultsUsing = null;
+
     public int $preloadLimit = 0;
+
     public ?string $relationshipName = null;
+
     public ?string $relationshipTitleColumn = null;
+
     public ?Closure $relationshipModifyQueryUsing = null;
 
     public function searchResultsUsing(?Closure $callback): self

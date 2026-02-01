@@ -9,8 +9,7 @@ class Badge extends Fragment
         protected ?string $color = null,
         protected ?array $icon = null,
         protected ?string $variant = null,
-    ) {
-    }
+    ) {}
 
     public function toData(): array
     {

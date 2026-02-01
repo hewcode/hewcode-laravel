@@ -6,8 +6,7 @@ class Text extends Fragment
 {
     public function __construct(
         public mixed $value
-    ) {
-    }
+    ) {}
 
     public function toData(): array
     {

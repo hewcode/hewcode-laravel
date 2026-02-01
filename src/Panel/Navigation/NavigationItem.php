@@ -17,7 +17,7 @@ class NavigationItem
 
     public static function make(): static
     {
-        return new static();
+        return new static;
     }
 
     public function label(string $label): static
@@ -28,7 +28,7 @@ class NavigationItem
     }
 
     /**
-     * @param string|(\Closure(): string)|null $url
+     * @param  string|(\Closure(): string)|null  $url
      */
     public function url(string|\Closure|null $url): static
     {

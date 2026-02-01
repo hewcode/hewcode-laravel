@@ -2,13 +2,14 @@
 
 namespace Hewcode\Hewcode\Lists\Drivers;
 
+use Hewcode\Hewcode\Lists\Filters\Filter;
 use Hewcode\Hewcode\Lists\Tabs\Tab;
 use Illuminate\Support\Collection;
-use Hewcode\Hewcode\Lists\Filters\Filter;
 
 class IterableDriver implements ListingDriver
 {
     protected Collection $data;
+
     protected Collection $originalData;
 
     public function __construct(iterable $data)
@@ -47,10 +48,11 @@ class IterableDriver implements ListingDriver
     {
         if ($filter->filterUsing) {
             $this->data = $filter->filterUsing->__invoke($this->data);
+
             return $this->data;
         }
 
-        if (!$filter->filled()) {
+        if (! $filter->filled()) {
             return $this->data;
         }
 
@@ -64,7 +66,7 @@ class IterableDriver implements ListingDriver
 
     public function applySort(?string $sortField, ?string $sortDirection, array $sortableFields, ?array $defaultSort, ?string $reorderable): void
     {
-        if (!$sortField || (! array_key_exists($sortField, $sortableFields) && $defaultSort !== [$sortField, $sortDirection] && $reorderable !== $sortField)) {
+        if (! $sortField || (! array_key_exists($sortField, $sortableFields) && $defaultSort !== [$sortField, $sortDirection] && $reorderable !== $sortField)) {
             return;
         }
 
@@ -72,7 +74,7 @@ class IterableDriver implements ListingDriver
 
         $this->data = $this->data->sortBy(function ($item) use ($sortField) {
             return data_get($item, $sortField);
-        }, SORT_REGULAR, !$ascending);
+        }, SORT_REGULAR, ! $ascending);
     }
 
     public function applyTab(Tab $tab): void

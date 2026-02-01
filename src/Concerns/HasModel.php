@@ -6,12 +6,12 @@ use InvalidArgumentException;
 
 trait HasModel
 {
-    protected object|null $model = null;
+    protected ?object $model = null;
 
     public function model(object|string|null $model): static
     {
         if (is_string($model) && class_exists($model)) {
-            $model = new $model();
+            $model = new $model;
         }
 
         if (is_string($model)) {
@@ -23,7 +23,7 @@ trait HasModel
         return $this;
     }
 
-    public function getModel(): object|null
+    public function getModel(): ?object
     {
         return $this->model;
     }
