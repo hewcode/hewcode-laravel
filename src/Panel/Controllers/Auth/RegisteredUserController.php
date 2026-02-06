@@ -2,6 +2,7 @@
 
 namespace Hewcode\Hewcode\Panel\Controllers\Auth;
 
+use Hewcode\Hewcode\Hewcode;
 use Hewcode\Hewcode\Models\User;
 use Hewcode\Hewcode\Panel\Controllers\Controller;
 use Illuminate\Auth\Events\Registered;
@@ -46,6 +47,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        return redirect()->intended(Hewcode::route('dashboard', absolute: false));
     }
 }

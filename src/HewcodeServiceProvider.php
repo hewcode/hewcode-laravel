@@ -70,6 +70,7 @@ class HewcodeServiceProvider extends PackageServiceProvider
                 Console\Commands\MakeFormCommand::class,
                 Console\Commands\MakePageCommand::class,
                 Console\Commands\MakeResourcePageCommand::class,
+                Console\Commands\FindHardcodedStringsCommand::class,
             ]);
         }
     }

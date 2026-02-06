@@ -126,7 +126,7 @@ class Manager
 
     public function routeName(string $name, Panel\Panel|string|null $panel = null): string
     {
-        $panel ??= Hewcode::config()->getDefaultPanel();
+        $panel ??= $this->currentPanel() ?? $this->config()->getDefaultPanel();
 
         if ($panel instanceof Panel\Panel) {
             $panel = $panel->getName();

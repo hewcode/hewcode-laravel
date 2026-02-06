@@ -2,6 +2,7 @@
 
 namespace Hewcode\Hewcode\Panel\Controllers\Auth;
 
+use Hewcode\Hewcode\Hewcode;
 use Hewcode\Hewcode\Panel\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ class EmailVerificationPromptController extends Controller
     public function __invoke(Request $request): Response|RedirectResponse
     {
         return $request->user()->hasVerifiedEmail()
-                    ? redirect()->intended(route('dashboard', absolute: false))
+                    ? redirect()->intended(Hewcode::route('dashboard', absolute: false))
                     : Inertia::render('hewcode/auth/verify-email', ['status' => $request->session()->get('status')]);
     }
 }

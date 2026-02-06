@@ -33,6 +33,15 @@ return [
         'search_options' => 'Search options...',
         'navigation_menu' => 'Navigation Menu',
         'toggle_theme' => 'Toggle theme',
+        'sort_by' => 'Sort by',
+        'from_date' => 'From date',
+        'to_date' => 'To date',
+        'pick_a_date' => 'Pick a date',
+        'pick_date_and_time' => 'Pick date and time',
+        'uploaded_file' => 'Uploaded file',
+        'show_password' => 'Show password',
+        'hide_password' => 'Hide password',
+        'no_items' => 'No items',
     ],
 
     'confirmation' => [
@@ -84,6 +93,8 @@ return [
     ],
 
     'settings' => [
+        'title' => 'Settings',
+        'description' => 'Manage your profile and account settings',
         'delete_account' => 'Delete account',
         'delete_account_description' => 'Delete your account and all of its resources',
         'proceed_with_caution' => 'Please proceed with caution, this cannot be undone.',
@@ -112,6 +123,11 @@ return [
 
     'dashboard' => [
         'title' => 'Dashboard',
+    ],
+
+    'file_upload' => [
+        'click_to_upload_or_drag_and_drop' => 'Click to upload or drag and drop',
+        'click_or_drag_to_replace' => 'Click or drag to replace',
     ],
 
 ];

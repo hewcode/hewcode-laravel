@@ -2,6 +2,7 @@
 
 namespace Hewcode\Hewcode\Panel\Controllers\Auth;
 
+use Hewcode\Hewcode\Hewcode;
 use Hewcode\Hewcode\Http\Requests\Auth\LoginRequest;
 use Hewcode\Hewcode\Panel\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
@@ -33,7 +34,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        return redirect()->intended(Hewcode::route('dashboard', absolute: false));
     }
 
     /**

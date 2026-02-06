@@ -48,6 +48,7 @@ class InstallCommand extends Command
         $this->updateAppBlade();
         $this->updateAppCss();
         $this->registerPanel();
+        $this->createMcpRoutes();
 
         if (! $this->option('dry-run')) {
             if (! $this->option('skip-npm')) {
@@ -707,6 +708,96 @@ JAVASCRIPT;
         }
     }
 
+    protected function createMcpRoutes(): void
+    {
+        $aiRoutesPath = base_path('routes/ai.php');
+
+        // If file exists, check if Hewcode is already registered
+        if (File::exists($aiRoutesPath)) {
+            $content = File::get($aiRoutesPath);
+
+            // Check if Hewcode MCP server is already registered
+            if (str_contains($content, 'HewcodeServer')) {
+                $this->components->info('✓ Hewcode MCP server already registered in routes/ai.php');
+
+                return;
+            }
+
+            // File exists but Hewcode not registered - append it
+            if ($this->option('dry-run')) {
+                $this->components->info('Would register Hewcode MCP server in routes/ai.php');
+
+                return;
+            }
+
+            // Add Hewcode import if not present
+            if (! str_contains($content, 'use Hewcode\Hewcode\Mcp\HewcodeServer;')) {
+                // Find the last use statement and add after it
+                if (preg_match('/^use .+;$/m', $content, $matches, PREG_OFFSET_CAPTURE)) {
+                    $lastUsePosition = $matches[0][1] + strlen($matches[0][0]);
+                    $content = substr_replace(
+                        $content,
+                        "\nuse Hewcode\\Hewcode\\Mcp\\HewcodeServer;",
+                        $lastUsePosition,
+                        0
+                    );
+                } else {
+                    // No use statements found, add after opening PHP tag
+                    $content = preg_replace(
+                        '/^<\?php\s*\n/',
+                        "<?php\n\nuse Hewcode\\Hewcode\\Mcp\\HewcodeServer;\n",
+                        $content
+                    );
+                }
+            }
+
+            // Add Hewcode MCP server registration at the end
+            $content = rtrim($content)."\n\n// Hewcode MCP server\nMcp::local('hewcode', HewcodeServer::class);\n";
+
+            File::put($aiRoutesPath, $content);
+            $this->components->info('✓ Registered Hewcode MCP server in routes/ai.php');
+
+            return;
+        }
+
+        // File doesn't exist, create it
+        if ($this->option('dry-run')) {
+            $this->components->info('Would create: routes/ai.php');
+
+            return;
+        }
+
+        $template = <<<'PHP'
+<?php
+
+use Hewcode\Hewcode\Mcp\HewcodeServer;
+use Laravel\Mcp\Facades\Mcp;
+
+/*
+|--------------------------------------------------------------------------
+| MCP Routes
+|--------------------------------------------------------------------------
+|
+| Register MCP servers for AI interactions. These servers expose tools,
+| resources, and prompts that AI clients can use to interact with your
+| application.
+|
+*/
+
+Mcp::local('hewcode', HewcodeServer::class);
+
+PHP;
+
+        // Ensure routes directory exists
+        $routesDir = base_path('routes');
+        if (! File::exists($routesDir)) {
+            File::makeDirectory($routesDir, 0755, true);
+        }
+
+        File::put($aiRoutesPath, $template);
+        $this->components->info('✓ Created routes/ai.php with Hewcode MCP server');
+    }
+
     protected function displayNextSteps(): void
     {
         $this->newLine();
@@ -721,6 +812,7 @@ JAVASCRIPT;
 
         $steps[] = 'Run: npm run build';
         $steps[] = 'Check the documentation at packages/docs/ for more details';
+        $steps[] = 'Use MCP server with Claude Code: php artisan mcp:start hewcode';
 
         $this->components->bulletList($steps);
     }

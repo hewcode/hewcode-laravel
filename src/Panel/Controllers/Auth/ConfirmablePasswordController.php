@@ -2,6 +2,7 @@
 
 namespace Hewcode\Hewcode\Panel\Controllers\Auth;
 
+use Hewcode\Hewcode\Hewcode;
 use Hewcode\Hewcode\Panel\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -36,6 +37,6 @@ class ConfirmablePasswordController extends Controller
 
         $request->session()->put('auth.password_confirmed_at', time());
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        return redirect()->intended(Hewcode::route('dashboard', absolute: false));
     }
 }
